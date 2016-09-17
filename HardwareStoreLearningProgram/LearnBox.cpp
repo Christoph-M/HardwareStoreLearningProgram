@@ -2,13 +2,15 @@
 
 #include <cstdio>
 #include <iostream>
+#include <time.h>
 #include <fstream>
+#include <vector>
 
 #include "Input.h"
 #include "ApplianceUtility.h"
 
 
-LearnBox::LearnBox(ApplianceUtility* app, int parts) :
+LearnBox::LearnBox(ApplianceUtility* app, int parts, bool ran) :
 	appUtil(app),
 	numParts((parts < 1) ? 1 : ((parts > 99) ? 99 : parts)),
 	curPart(0),
@@ -31,7 +33,20 @@ LearnBox::LearnBox(ApplianceUtility* app, int parts) :
 
 		file.close();
 	} else {
-		for (int i = 0; i < appUtil->NumWords(); ++i) partitions[curPart].push_back(i);
+		if (ran) {
+			srand((unsigned int)time(NULL));
+
+			std::vector<int> words(appUtil->NumWords());
+			for (int i = 0; i < appUtil->NumWords(); ++i) words[i] = i;
+
+			while (!words.empty()) {
+				int p = rand() % words.size();
+				partitions[curPart].push_back(words[p]);
+				words.erase(words.begin() + p);
+			}
+		} else {
+			for (int i = 0; i < appUtil->NumWords(); ++i) partitions[curPart].push_back(i);
+		}
 	}
 }
 

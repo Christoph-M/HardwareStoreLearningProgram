@@ -13,8 +13,8 @@
 
 
 void ModeSelect();
-void ModeLearnBox();
-void ModeSequence();
+void ModeLearnBox(bool ran = false);
+void ModeSequence(bool ran = false);
 bool Continue(IMode&, ScoreBoard&);
 void Reset(IMode&, ScoreBoard&);
 void Save(IMode&, ScoreBoard&);
@@ -32,19 +32,22 @@ int main() {
 
 void ModeSelect() {
 	system("cls");
-	std::puts("\n Choose mode. (1: Learn Box  |  2: Sequential)");
+	std::puts("\n Choose mode. (1: Learn Box   |  2: Random Learn Box)\n"
+			    "              (3: Sequential  |  4: Random Sequential)");
 
 	switch (*Input(1).GetInput()) {
-		case '1': default: ModeLearnBox(); break;
-		case '2':		   ModeSequence(); break;
+		case '1': default: ModeLearnBox();	   break;
+		case '2':		   ModeLearnBox(true); break;
+		case '3':		   ModeSequence();	   break;
+		case '4':		   ModeSequence(true); break;
 	}
 }
 
-void ModeLearnBox() {
+void ModeLearnBox(bool ran) {
 	const int length = (sizeof(appliances) / sizeof(appliances[0]));
 
 	ApplianceUtility appUtil(appliances, length);
-	LearnBox learnBox(&appUtil, 5);
+	LearnBox learnBox(&appUtil, 5, ran);
 	ScoreBoard scoreBoard(1, 5, -1);
 
 	do {
@@ -55,11 +58,11 @@ void ModeLearnBox() {
 	} while (Continue(learnBox, scoreBoard));
 }
 
-void ModeSequence() {
+void ModeSequence(bool ran) {
 	const int length = (sizeof(appliances) / sizeof(appliances[0]));
 
 	ApplianceUtility appUtil(appliances, length);
-	Sequence sequence(&appUtil);
+	Sequence sequence(&appUtil, ran);
 	ScoreBoard scoreBoard(1, 5, -1, 2);
 
 	do {

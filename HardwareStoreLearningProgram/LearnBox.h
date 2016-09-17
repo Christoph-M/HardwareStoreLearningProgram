@@ -7,7 +7,7 @@
 
 class LearnBox : public IMode {
 public:
-	LearnBox(class ApplianceUtility*, int parts = 0);
+	LearnBox(class ApplianceUtility*, int parts = 1, bool ran = false);
 
 	int NextWord();
 	void Reset();

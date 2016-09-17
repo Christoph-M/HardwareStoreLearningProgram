@@ -11,11 +11,9 @@ public:
 	void DisplayWord(int word = 0);
 	void DisplayTips(int word = 0);
 	void DisplayResult(bool, int word = 0);
+	int NextWordIndex(int word = 0);
 
 	~ApplianceUtility();
-
-private:
-	int NextWordIndex(int word = 0);
 
 private:
 	const int numWords;

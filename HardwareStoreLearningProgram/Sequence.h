@@ -5,7 +5,7 @@
 
 class Sequence : public IMode {
 public:
-	Sequence(class ApplianceUtility*);
+	Sequence(class ApplianceUtility*, bool ran = false);
 
 	int NextWord();
 	void Reset();
@@ -17,4 +17,6 @@ private:
 	class ApplianceUtility* appUtil;
 
 	int curWord;
+
+	bool random;
 };

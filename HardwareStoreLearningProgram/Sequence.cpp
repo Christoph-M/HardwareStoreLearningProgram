@@ -1,14 +1,16 @@
 #include "Sequence.h"
 
 #include <fstream>
+#include <time.h>
 
 #include "Input.h"
 #include "ApplianceUtility.h"
 
 
-Sequence::Sequence(ApplianceUtility* app) :
+Sequence::Sequence(ApplianceUtility* app, bool ran) :
 	appUtil(app),
-	curWord(0)
+	curWord(0),
+	random(ran)
 {
 	std::ifstream file;
 	file.open("save\\save.sequence");
@@ -16,6 +18,9 @@ Sequence::Sequence(ApplianceUtility* app) :
 	if (file.is_open()) {
 		curWord = file.get() - '0';
 		file.close();
+	} else if (random) {
+		srand((unsigned int)time(NULL));
+		curWord = rand() % appUtil->NumWords();
 	}
 }
 
@@ -36,7 +41,7 @@ int Sequence::NextWord() {
 	bool result = inpt.CheckInput(input, appUtil->GetNextWord(curWord));
 
 	appUtil->DisplayResult(result, curWord);
-	if (result) curWord = (curWord >= appUtil->NumWords() - 1) ? 0 : curWord + 1;
+	if (result) curWord = (random) ? rand() % appUtil->NumWords() : appUtil->NextWordIndex(curWord);
 
 	return (result) ? ((tip) ? TIP : RIGHT) : WRONG;
 }
