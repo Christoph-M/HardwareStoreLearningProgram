@@ -1,7 +1,4 @@
 #include <cstdio>
-#include <iostream>
-#include <cstdlib>
-#include <time.h>
 
 
 #include "Header.h"
@@ -13,8 +10,7 @@
 
 
 void ModeSelect();
-void ModeLearnBox(bool ran = false);
-void ModeSequence(bool ran = false);
+void RunMode(IMode&, ScoreBoard&, bool ran = false);
 bool Continue(IMode&, ScoreBoard&);
 void Reset(IMode&, ScoreBoard&);
 void Save(IMode&, ScoreBoard&);
@@ -24,6 +20,8 @@ bool running = true;
 
 
 int main() {
+	_wmkdir(L"save");
+
 	while (running) ModeSelect();
 
 	return 0;
@@ -31,46 +29,27 @@ int main() {
 
 
 void ModeSelect() {
+	ApplianceUtility appUtil(appliances, sizeof(appliances) / sizeof(appliances[0]));
+
 	system("cls");
 	std::puts("\n Choose mode. (1: Learn Box   |  2: Random Learn Box)\n"
 			    "              (3: Sequential  |  4: Random Sequential)");
 
 	switch (*Input(1).GetInput()) {
-		case '1': default: ModeLearnBox();	   break;
-		case '2':		   ModeLearnBox(true); break;
-		case '3':		   ModeSequence();	   break;
-		case '4':		   ModeSequence(true); break;
+		case '1': default: RunMode(LearnBox(&appUtil, 5, false), ScoreBoard(1, 5, -1, 1)); break;
+		case '2':		   RunMode(LearnBox(&appUtil, 5, true ), ScoreBoard(1, 5, -1, 2)); break;
+		case '3':		   RunMode(Sequence(&appUtil, false),	 ScoreBoard(1, 5, -1, 3)); break;
+		case '4':		   RunMode(Sequence(&appUtil, true ),	 ScoreBoard(1, 5, -1, 4)); break;
 	}
 }
 
-void ModeLearnBox(bool ran) {
-	const int length = (sizeof(appliances) / sizeof(appliances[0]));
-
-	ApplianceUtility appUtil(appliances, length);
-	LearnBox learnBox(&appUtil, 5, ran);
-	ScoreBoard scoreBoard(1, 5, -1);
-
+void RunMode(IMode& mode, ScoreBoard& board, bool rand) {
 	do {
 		system("cls");
 
-		scoreBoard.DisplayScore();
-		scoreBoard.UpdateScore(learnBox.NextWord());
-	} while (Continue(learnBox, scoreBoard));
-}
-
-void ModeSequence(bool ran) {
-	const int length = (sizeof(appliances) / sizeof(appliances[0]));
-
-	ApplianceUtility appUtil(appliances, length);
-	Sequence sequence(&appUtil, ran);
-	ScoreBoard scoreBoard(1, 5, -1, 2);
-
-	do {
-		system("cls");
-
-		scoreBoard.DisplayScore();
-		scoreBoard.UpdateScore(sequence.NextWord());
-	} while (Continue(sequence, scoreBoard));
+		board.DisplayScore();
+		board.UpdateScore(mode.NextWord());
+	} while (Continue(mode, board));
 }
 
 bool Continue(IMode& mode, ScoreBoard& board) {
