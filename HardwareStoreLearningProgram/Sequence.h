@@ -5,7 +5,7 @@
 
 class Sequence : public IMode {
 public:
-	Sequence(char**, int);
+	Sequence(class ApplianceUtility*);
 
 	int NextWord();
 	void Reset();
@@ -14,15 +14,7 @@ public:
 	~Sequence();
 
 private:
-	void DisplayWord();
-	void DisplayTips();
-	void DisplayResult(bool);
-	int  NextWordIndex();
-
-private:
-	const int numWords;
-
-	char** appliances;
+	class ApplianceUtility* appUtil;
 
 	int curWord;
 };

@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ApplianceUtility.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="LearnBox.cpp" />
     <ClCompile Include="main.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="Sequence.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ApplianceUtility.h" />
     <ClInclude Include="Header.h" />
     <ClInclude Include="IMode.h" />
     <ClInclude Include="Input.h" />

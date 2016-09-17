@@ -7,7 +7,7 @@
 
 class LearnBox : public IMode {
 public:
-	LearnBox(char**, int, int parts = 0);
+	LearnBox(class ApplianceUtility*, int parts = 0);
 
 	int NextWord();
 	void Reset();
@@ -16,16 +16,11 @@ public:
 	~LearnBox();
 
 private:
-	void DisplayWord();
-	void DisplayTips();
-	void DisplayResult(bool);
-	int  NextWordIndex();
 	void DisplayPartitions();
 	void UpdatePartitions(bool);
 
 private:
-	const int numWords;
-	char** appliances;
+	class ApplianceUtility* appUtil;
 
 	const int numParts;
 	int curPart;

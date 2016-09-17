@@ -6,6 +6,7 @@
     <ClCompile Include="ScoreBoard.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Sequence.cpp" />
+    <ClCompile Include="ApplianceUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LearnBox.h" />
@@ -14,5 +15,6 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="Sequence.h" />
     <ClInclude Include="IMode.h" />
+    <ClInclude Include="ApplianceUtility.h" />
   </ItemGroup>
 </Project>

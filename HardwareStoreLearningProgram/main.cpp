@@ -7,6 +7,7 @@
 #include "Header.h"
 #include "Sequence.h"
 #include "LearnBox.h"
+#include "ApplianceUtility.h"
 #include "ScoreBoard.h"
 #include "Input.h"
 
@@ -19,8 +20,11 @@ void Reset(IMode&, ScoreBoard&);
 void Save(IMode&, ScoreBoard&);
 
 
+bool running = true;
+
+
 int main() {
-	ModeSelect();
+	while (running) ModeSelect();
 
 	return 0;
 }
@@ -31,19 +35,17 @@ void ModeSelect() {
 	std::puts("\n Choose mode. (1: Learn Box  |  2: Sequential)");
 
 	switch (*Input(1).GetInput()) {
-	case '1': default:
-		ModeLearnBox(); break;
-
-	case '2':
-		ModeSequence(); break;
+		case '1': default: ModeLearnBox(); break;
+		case '2':		   ModeSequence(); break;
 	}
 }
 
 void ModeLearnBox() {
 	const int length = (sizeof(appliances) / sizeof(appliances[0]));
 
-	LearnBox learnBox = LearnBox(appliances, length, 5);
-	ScoreBoard scoreBoard = ScoreBoard(1, 5, -1);
+	ApplianceUtility appUtil(appliances, length);
+	LearnBox learnBox(&appUtil, 5);
+	ScoreBoard scoreBoard(1, 5, -1);
 
 	do {
 		system("cls");
@@ -56,8 +58,9 @@ void ModeLearnBox() {
 void ModeSequence() {
 	const int length = (sizeof(appliances) / sizeof(appliances[0]));
 
-	Sequence sequence = Sequence(appliances, length);
-	ScoreBoard scoreBoard = ScoreBoard(1, 5, -1, 2);
+	ApplianceUtility appUtil(appliances, length);
+	Sequence sequence(&appUtil);
+	ScoreBoard scoreBoard(1, 5, -1, 2);
 
 	do {
 		system("cls");
@@ -67,25 +70,25 @@ void ModeSequence() {
 	} while (Continue(sequence, scoreBoard));
 }
 
-bool Continue(IMode& box, ScoreBoard& board) {
-	Save(box, board);
+bool Continue(IMode& mode, ScoreBoard& board) {
+	Save(mode, board);
 
 	std::puts(" Continue? (Enter: Continue  |  R: Reset  |  M: Mode Select  |  Q: Quit)");
 	
 	switch (*Input(1).GetInput()) {
-		case 'M': case 'm': ModeSelect();	// Gobshite, I fecking banjaxed this bombay shitehawk, jaysus!
-		case 'Q': case 'q': return false;
-		case 'R': case 'r': Reset(box, board);
+		case 'Q': case 'q': running = false;
+		case 'M': case 'm': return false;
+		case 'R': case 'r': Reset(mode, board);
 		default: return true;
 	}
 }
 
-void Reset(IMode& box, ScoreBoard& board) {
-	box.Reset();
+void Reset(IMode& mode, ScoreBoard& board) {
+	mode.Reset();
 	board.Reset();
 }
 
-void Save(IMode& box, ScoreBoard& board) {
-	box.Save();
+void Save(IMode& mode, ScoreBoard& board) {
+	mode.Save();
 	board.Save();
 }
