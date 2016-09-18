@@ -25,5 +25,7 @@ private:
 	const int numParts;
 	int curPart;
 
+	bool random;
+
 	std::list<int>* partitions;
 };

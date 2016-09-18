@@ -13,7 +13,7 @@ Sequence::Sequence(ApplianceUtility* app, bool ran) :
 	random(ran)
 {
 	std::ifstream file;
-	file.open("save\\save.sequence");
+	file.open((random) ? "save\\save.sequencer" : "save\\save.sequence");
 
 	if (file.is_open()) {
 		curWord = file.get() - '0';
@@ -52,7 +52,7 @@ void Sequence::Reset() {
 
 void Sequence::Save() {
 	std::ofstream file;
-	file.open("save\\save.sequence", std::ios::out | std::ios::trunc);
+	file.open((random) ? "save\\save.sequencer" : "save\\save.sequence");
 		file.put(static_cast<char>(curWord) + '0');
 	file.close();
 }

@@ -14,10 +14,11 @@ LearnBox::LearnBox(ApplianceUtility* app, int parts, bool ran) :
 	appUtil(app),
 	numParts((parts < 1) ? 1 : ((parts > 99) ? 99 : parts)),
 	curPart(0),
+	random(ran),
 	partitions(new std::list<int>[numParts])
 {
 	std::ifstream file;
-	file.open("save\\save.learnbox");
+	file.open((random) ? "save\\save.leanrboxr" : "save\\save.learnbox");
 
 	if (file.is_open()) {
 		curPart = file.get() - '0';
@@ -85,7 +86,7 @@ void LearnBox::Reset() {
 
 void LearnBox::Save() {
 	std::ofstream file;
-	file.open("save\\save.learnbox");
+	file.open((random) ? "save\\save.leanrboxr" : "save\\save.learnbox");
 		file.put(static_cast<char>(curPart) + '0');
 		for (int i = 0; i < numParts; ++i) {
 			for (int word : partitions[i]) file.put(static_cast<char>(word) + '0');

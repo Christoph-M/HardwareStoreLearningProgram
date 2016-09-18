@@ -1,4 +1,7 @@
 #include <cstdio>
+#include <Windows.h>
+
+#pragma comment(lib, "winmm.lib")
 
 
 #include "Header.h"
@@ -20,7 +23,7 @@ bool running = true;
 
 
 int main() {
-	_wmkdir(L"save");
+	CreateDirectory(L"save", NULL);
 
 	while (running) ModeSelect();
 
@@ -55,11 +58,13 @@ void RunMode(IMode& mode, ScoreBoard& board, bool rand) {
 bool Continue(IMode& mode, ScoreBoard& board) {
 	Save(mode, board);
 
-	std::puts(" Continue? (Enter: Continue  |  R: Reset  |  M: Mode Select  |  Q: Quit)");
+	std::puts(" Continue? (Enter: Continue  |  P: Play Music  |  R: Reset)\n"
+			  "           (M: Mode Select   |  Q: Quit)");
 	
 	switch (*Input(1).GetInput()) {
 		case 'Q': case 'q': running = false;
 		case 'M': case 'm': return false;
+		case 'P': case 'p': PlaySound(L"hardware_store.wav", NULL, SND_FILENAME | SND_ASYNC); return true;
 		case 'R': case 'r': Reset(mode, board);
 		default: return true;
 	}
