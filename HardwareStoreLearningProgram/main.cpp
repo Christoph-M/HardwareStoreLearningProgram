@@ -13,7 +13,7 @@
 
 
 void ModeSelect();
-void RunMode(IMode&, ScoreBoard&, bool ran = false);
+void RunMode(IMode&, ScoreBoard&);
 bool Continue(IMode&, ScoreBoard&);
 void Reset(IMode&, ScoreBoard&);
 void Save(IMode&, ScoreBoard&);
@@ -46,7 +46,7 @@ void ModeSelect() {
 	}
 }
 
-void RunMode(IMode& mode, ScoreBoard& board, bool rand) {
+void RunMode(IMode& mode, ScoreBoard& board) {
 	do {
 		system("cls");
 
